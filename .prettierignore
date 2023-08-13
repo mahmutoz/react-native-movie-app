@@ -1,0 +1,6 @@
+package.json
+tailwind.config.js
+yarn.lock
+babel.config.js
+
+node_modules/
