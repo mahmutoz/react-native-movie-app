@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ChevronLeftIcon, HeartIcon } from "react-native-heroicons/outline";
+import { ArrowLeftIcon, ChevronLeftIcon } from "react-native-heroicons/outline";
+import { HeartIcon } from "react-native-heroicons/solid";
 import { styles, theme } from "../theme";
 import Loading from "../components/Loading";
+import MovieList from "../components/MovieList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IOS, WIDTH, HEIGHT } from "../constants/appConstants";
+import Cast from "../components/Cast";
 
 export default function MovieScreen() {
   const { params: item } = useRoute();
@@ -47,8 +50,8 @@ export default function MovieScreen() {
         ) : (
           <View>
             <Image
-              // source={require('../assets/images/moviePoster2.png')}
-              source={{ uri: image500(movie.poster_path) || fallbackMoviePoster }}
+              source={require("../assets/img/moviePoster2.png")}
+              // source={{ uri: image500(movie.poster_path) || fallbackMoviePoster }}
               style={{ width: WIDTH, height: HEIGHT * 0.55 }}
             />
             <LinearGradient
@@ -61,6 +64,46 @@ export default function MovieScreen() {
           </View>
         )}
       </View>
+      <View style={{ marginTop: -(HEIGHT * 0.09) }} className="space-y-3">
+        {/* title */}
+        <Text className="text-white text-center text-3xl font-bold tracking-widest">
+          {movie?.title}
+        </Text>
+
+        {/* status, release year, runtime */}
+        {movie?.id ? (
+          <Text className="text-neutral-400 font-semibold text-base text-center">
+            {movie?.status} • {movie?.release_date?.split("-")[0] || "N/A"} •{" "}
+            {movie?.runtime} min
+          </Text>
+        ) : null}
+
+        {/* genres  */}
+        <View className="flex-row justify-center mx-4 space-x-2">
+          {movie?.genres?.map((genre, index) => {
+            let showDot = index + 1 != movie.genres.length;
+            return (
+              <Text
+                key={index}
+                className="text-neutral-400 font-semibold text-base text-center"
+              >
+                {genre?.name} {showDot ? "•" : null}
+              </Text>
+            );
+          })}
+        </View>
+
+        {/* description */}
+        <Text className="text-neutral-400 mx-4 tracking-wide">{movie?.overview}</Text>
+      </View>
+
+      {/* cast */}
+      {movie?.id && cast.length > 0 && <Cast navigation={navigation} cast={cast} />}
+
+      {/* similar movies section */}
+      {movie?.id && similarMovies.length > 0 && (
+        <MovieList title={"Similar Movies"} hideSeeAll={true} data={similarMovies} />
+      )}
     </ScrollView>
   );
 }
