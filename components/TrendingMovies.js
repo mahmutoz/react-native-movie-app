@@ -1,13 +1,14 @@
-import { Image, Text, TouchableWithoutFeedback, View } from "react-native";
-import Carousel from "react-native-snap-carousel";
-import { WIDTH, HEIGHT } from "../constants/appConstants";
-import { useNavigation } from "@react-navigation/native";
+import { Image, Text, TouchableWithoutFeedback, View } from "react-native"
+import Carousel from "react-native-snap-carousel"
+import { WIDTH, HEIGHT } from "../constants/appConstants"
+import { useNavigation } from "@react-navigation/native"
+import { image500 } from "../api"
 
 export default function TrendingMovies({ data }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
   const handleClick = (item) => {
-    navigation.navigate("Movie", item);
-  };
+    navigation.navigate("Movie", item)
+  }
 
   return (
     <View className="mb-8">
@@ -24,14 +25,14 @@ export default function TrendingMovies({ data }) {
         slideStyle={{ display: "flex", alignItems: "center" }}
       />
     </View>
-  );
+  )
 }
 
 const MovieCard = ({ item, handleClick, index }) => {
   return (
     <TouchableWithoutFeedback key={index} onPress={() => handleClick(item)}>
       <Image
-        source={require("../assets/img/moviePoster1.png")}
+        source={{ uri: image500(item.poster_path) }}
         style={{
           width: WIDTH * 0.6,
           height: HEIGHT * 0.4
@@ -39,5 +40,5 @@ const MovieCard = ({ item, handleClick, index }) => {
         className="rounded-3xl"
       />
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}

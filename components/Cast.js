@@ -1,5 +1,6 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native"
+import React from "react"
+import { fallbackPersonImage, image185 } from "../api"
 
 export default function Cast({ cast, navigation }) {
   return (
@@ -21,8 +22,9 @@ export default function Cast({ cast, navigation }) {
                 <View className="overflow-hidden rounded-full h-20 w-20 items-center border border-neutral-500">
                   <Image
                     className="rounded-2xl h-24 w-20"
-                    source={require("../assets/img/castImage1.png")}
-                    // source={{uri: image185(person?.profile_path) || fallbackPersonImage}}
+                    source={{
+                      uri: image185(person?.profile_path) || fallbackPersonImage
+                    }}
                   />
                 </View>
 
@@ -37,9 +39,9 @@ export default function Cast({ cast, navigation }) {
                     : person?.original_name}
                 </Text>
               </TouchableOpacity>
-            );
+            )
           })}
       </ScrollView>
     </View>
-  );
+  )
 }

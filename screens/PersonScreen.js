@@ -1,28 +1,57 @@
-import React, { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { IOS } from "../constants/appConstants";
-import { styles, theme } from "../theme";
-import { ChevronLeftIcon } from "react-native-heroicons/outline";
-import { HeartIcon } from "react-native-heroicons/solid";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Loading, MovieList } from "../components";
+import React, { useEffect, useState } from "react"
+import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native"
+import { IOS, WIDTH, HEIGHT } from "../constants/appConstants"
+import { styles, theme } from "../theme"
+import { ChevronLeftIcon } from "react-native-heroicons/outline"
+import { HeartIcon } from "react-native-heroicons/solid"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useNavigation, useRoute } from "@react-navigation/native"
+import { Loading, MovieList } from "../components"
+import {
+  fallbackPersonImage,
+  fetchPersonDetails,
+  fetchPersonMovies,
+  image342
+} from "../api"
 
-const verticalMargin = IOS ? "" : "my-3";
+const verticalMargin = IOS ? "" : "my-3"
 
 export default function PersonScreen() {
-  const { params: item } = useRoute();
-  const navigation = useNavigation();
+  const { params: item } = useRoute()
+  const navigation = useNavigation()
 
-  const [isFavourite, setIsFavourite] = useState(false);
-  const [person, setPerson] = useState({});
-  const [personMovies, setPersonMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(false)
+  const [person, setPerson] = useState({})
+  const [personMovies, setPersonMovies] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    Promise.all([getPersonDetails(item?.id), getPersonMovies(item?.id)]).finally(() =>
+      setLoading(false)
+    )
+  }, [item])
+
+  const getPersonDetails = async (id) => {
+    const data = await fetchPersonDetails(id)
+    if (data) {
+      setPerson(data)
+    }
+  }
+  const getPersonMovies = async (id) => {
+    const data = await fetchPersonMovies(id)
+    if (data && data.cast) {
+      setPersonMovies(data.cast)
+    }
+  }
 
   return (
-    <ScrollView>
+    <ScrollView
+      className="flex-1 bg-neutral-900"
+      contentContainerStyle={{ paddingBottom: 20 }}
+    >
       <SafeAreaView
-        className={`absolute z-20 w-full flex-row justify-between items-center px-4 ${verticalMargin}`}
+        className={`flex-row justify-between items-center mx-4 z-10 ${verticalMargin}`}
       >
         <TouchableOpacity
           style={styles.background}
@@ -52,9 +81,8 @@ export default function PersonScreen() {
           >
             <View className="items-center rounded-full overflow-hidden h-72 w-72 border-neutral-500 border-2">
               <Image
-                source={require("../assets/img/castImage2.png")}
-                // source={{ uri: image342(person?.profile_path) || fallbackPersonImage }}
-                style={{ height: height * 0.43, width: width * 0.74 }}
+                source={{ uri: image342(person?.profile_path) || fallbackPersonImage }}
+                style={{ height: HEIGHT * 0.43, width: WIDTH * 0.74 }}
               />
             </View>
           </View>
@@ -70,29 +98,31 @@ export default function PersonScreen() {
             </Text>
           </View>
 
-          <View className="mx-3 p-4 mt-6 flex-row justify-between items-center bg-neutral-700 rounded-full ">
-            <View className="border-r-2 border-r-neutral-400 px-2 items-center">
+          <View className="mx-3 px-4 py-2 mt-6 flex-row justify-between items-center bg-neutral-700 rounded-full">
+            <View className="items-center">
               <Text className="text-white font-semibold ">Gender</Text>
               <Text className="text-neutral-300 text-sm">
                 {/* Male */}
-                {person?.gender == 1 ? "Female" : "Male"}
+                {person?.gender === 1 ? "Female" : "Male"}
               </Text>
             </View>
-            <View className="border-r-2 border-r-neutral-400 px-2 items-center">
+            <Text className="border-r border-r-neutral-400 items-center"></Text>
+            <View className="items-center">
               <Text className="text-white font-semibold">Birthday</Text>
               <Text className="text-neutral-300 text-sm">
-                {/* 1964-09-02 */}
-                {person?.birthday}
+                {person?.birthday ? person?.birthday : "-"}
               </Text>
             </View>
-            <View className="border-r-2 border-r-neutral-400 px-2 items-center">
-              <Text className="text-white font-semibold">known for</Text>
+            <Text className="border-r border-r-neutral-400 items-center"></Text>
+            <View className="items-center">
+              <Text className="text-white font-semibold">Known For:</Text>
               <Text className="text-neutral-300 text-sm">
                 {/* Acting */}
-                {person?.known_for_department}
+                {person?.known_for_department ? person?.known_for_department : "-"}
               </Text>
             </View>
-            <View className="px-2 items-center">
+            <Text className="border-r border-r-neutral-400 items-center"></Text>
+            <View className="">
               <Text className="text-white font-semibold">Popularity</Text>
               <Text className="text-neutral-300 text-sm">
                 {/* 84.23 % */}
@@ -103,7 +133,7 @@ export default function PersonScreen() {
           <View className="my-6 mx-4 space-y-2">
             <Text className="text-white text-lg">Biography</Text>
             <Text className="text-neutral-400 tracking-wide">
-              {person?.biography ? person.biography : "N/A"}
+              {person?.biography ? person?.biography : "-"}
             </Text>
           </View>
 
@@ -114,5 +144,5 @@ export default function PersonScreen() {
         </View>
       )}
     </ScrollView>
-  );
+  )
 }

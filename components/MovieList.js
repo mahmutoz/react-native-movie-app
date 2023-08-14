@@ -5,13 +5,15 @@ import {
   TouchableWithoutFeedback,
   View,
   Image
-} from "react-native";
-import { styles } from "../theme";
-import { WIDTH, HEIGHT } from "../constants/appConstants";
-import React from "react";
+} from "react-native"
+import { styles } from "../theme"
+import { WIDTH, HEIGHT } from "../constants/appConstants"
+import React from "react"
+import { fallbackMoviePoster, image185 } from "../api"
+import { useNavigation } from "@react-navigation/native"
 
 export default function MovieList({ title, data, hideSeeAll }) {
-  let movieName = "MovieList";
+  const navigation = useNavigation()
 
   return (
     <View className="mb-8 space-y-4">
@@ -38,23 +40,23 @@ export default function MovieList({ title, data, hideSeeAll }) {
             >
               <View className="mr-4">
                 <Image
-                  source={require("../assets/img/moviePoster2.png")}
-                  className="rounded-3xl"
+                  source={{ uri: image185(item.poster_path) || fallbackMoviePoster }}
+                  className="rounded-3xl mb-1"
                   style={{
                     width: WIDTH * 0.33,
                     height: HEIGHT * 0.22
                   }}
                 />
                 <Text className="text-neutral-300 ml-1">
-                  {item?.title?.length > 14
-                    ? item?.title?.slice(0, 14) + "..."
+                  {item?.title?.length > 17
+                    ? item?.title?.slice(0, 17) + "..."
                     : item?.title}
                 </Text>
               </View>
             </TouchableWithoutFeedback>
-          );
+          )
         })}
       </ScrollView>
     </View>
-  );
+  )
 }
