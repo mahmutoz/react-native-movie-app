@@ -1,5 +1,10 @@
 ![](./assets/preview.png)
 
+### Description
+
+This is a simple movie app built with React Native and Tailwind CSS. It uses
+the [The Movie Database (TMDb) API](https://www.themoviedb.org/documentation/api) to fetch movies.
+
 ### Get Started
 
 - Sign up over at [themoviedb.org](https://www.themoviedb.org) and get an API key.
