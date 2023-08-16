@@ -5,10 +5,8 @@ import { StatusBar } from "expo-status-bar"
 import { Bars3CenterLeftIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline"
 import { styles } from "../theme"
 import { useEffect, useState } from "react"
-import TrendingMovies from "../components/TrendingMovies"
-import MovieList from "../components/MovieList"
+import { TrendingMovies, MovieList, Loading } from "../components"
 import { useNavigation } from "@react-navigation/native"
-import { Loading } from "../components"
 import { fetchTopRatedMovies, fetchTrendingMovies, fetchUpcomingMovies } from "../api"
 
 export default function HomeScreen() {
@@ -68,10 +66,10 @@ export default function HomeScreen() {
           {/* Trending Movies Carousel */}
           {trending?.length > 0 && <TrendingMovies data={trending} />}
 
-          {/* upcoming movies row */}
+          {/* Upcoming movies row */}
           {upcoming?.length > 0 && <MovieList title="Upcoming" data={upcoming} />}
 
-          {/* top rated movies row */}
+          {/* Top-rated movies row */}
           {topRated?.length > 0 && <MovieList title="Top Rated" data={topRated} />}
         </ScrollView>
       )}

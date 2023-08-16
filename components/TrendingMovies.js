@@ -3,6 +3,8 @@ import Carousel from "react-native-snap-carousel"
 import { WIDTH, HEIGHT } from "../constants/appConstants"
 import { useNavigation } from "@react-navigation/native"
 import { image500 } from "../api"
+import { theme } from "../theme"
+import { MovieCard } from "./index"
 
 export default function TrendingMovies({ data }) {
   const navigation = useNavigation()
@@ -25,20 +27,5 @@ export default function TrendingMovies({ data }) {
         slideStyle={{ display: "flex", alignItems: "center" }}
       />
     </View>
-  )
-}
-
-const MovieCard = ({ item, handleClick, index }) => {
-  return (
-    <TouchableWithoutFeedback key={index} onPress={() => handleClick(item)}>
-      <Image
-        source={{ uri: image500(item.poster_path) }}
-        style={{
-          width: WIDTH * 0.6,
-          height: HEIGHT * 0.4
-        }}
-        className="rounded-3xl"
-      />
-    </TouchableWithoutFeedback>
   )
 }

@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native"
 import { LinearGradient } from "expo-linear-gradient"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { ChevronLeftIcon } from "react-native-heroicons/outline"
-import { HeartIcon } from "react-native-heroicons/solid"
+import { HeartIcon, StarIcon } from "react-native-heroicons/solid"
 import { styles, theme } from "../theme"
 import Loading from "../components/Loading"
 import MovieList from "../components/MovieList"
@@ -127,6 +127,14 @@ export default function MovieScreen() {
                   </Text>
                 )
               })}
+            </View>
+
+            {/* rating */}
+            <View className="flex-row justify-center items-center space-x-1">
+              <StarIcon size="20" color={theme.background} />
+              <Text className="text-white text-xl font-bold tracking-widest">
+                {item?.vote_average > 0 ? item?.vote_average?.toFixed(1) : "N/A"}
+              </Text>
             </View>
 
             {/* description */}

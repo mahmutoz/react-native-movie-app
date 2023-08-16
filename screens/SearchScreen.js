@@ -21,7 +21,6 @@ export default function SearchScreen() {
 
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState([])
-  const [textLength, setTextLength] = useState(0)
 
   const handleSearch = (search) => {
     if (search && search.length > MIN_SEARCH_LENGTH) {
@@ -29,7 +28,7 @@ export default function SearchScreen() {
       searchMovies({
         query: search,
         include_adult: false,
-        language: "tr-TR",
+        language: "en-US",
         page: "1"
       }).then((data) => {
         setLoading(false)
@@ -49,7 +48,6 @@ export default function SearchScreen() {
       <View className="mx-4 my-3 flex-row justify-between items-center border border-neutral-500 rounded-full">
         <TextInput
           onChangeText={handleTextDebounce}
-          onTextInput={(e) => setTextLength(e.nativeEvent.text.length)}
           placeholder="Search Movie"
           placeholderTextColor={"lightgray"}
           className="py-2 pl-4 pr-4 flex-1 text-base font-semibold text-white tracking-wider"
